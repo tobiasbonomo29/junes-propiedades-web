@@ -1,4 +1,4 @@
-export type PropertyOperation = "Venta" | "Alquiler"
+export type PropertyOperation = "Venta" | "Alquiler" | "Alquiler Temporario"
 export type PropertyType = "Casa" | "Departamento" | "PH" | "Local" | "Oficina" | "Lote"
 export type PropertyCurrency = "USD" | "ARS"
 export type PropertyStatus = "Activa" | "Vendida" | "Alquilada"

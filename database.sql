@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS properties (
   currency      TEXT         NOT NULL DEFAULT 'USD'
                              CHECK (currency IN ('USD','ARS')),
   operation     TEXT         NOT NULL
-                             CHECK (operation IN ('Venta','Alquiler')),
+                             CHECK (operation IN ('Venta','Alquiler','Alquiler Temporario')),
   type          TEXT         NOT NULL
                              CHECK (type IN ('Casa','Departamento','PH','Local','Oficina','Lote')),
   neighborhood  TEXT,
@@ -37,6 +37,14 @@ CREATE TABLE IF NOT EXISTS properties (
 -- Migración para bases existentes: agrega dirección exacta si la tabla ya existía
 ALTER TABLE properties
   ADD COLUMN IF NOT EXISTS exact_address TEXT;
+
+-- Migración para bases existentes: permite alquiler temporario como operación
+ALTER TABLE properties
+  DROP CONSTRAINT IF EXISTS properties_operation_check;
+
+ALTER TABLE properties
+  ADD CONSTRAINT properties_operation_check
+  CHECK (operation IN ('Venta','Alquiler','Alquiler Temporario'));
 
 -- Trigger para actualizar updated_at automáticamente
 CREATE OR REPLACE FUNCTION update_updated_at_column()

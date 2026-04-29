@@ -13,7 +13,7 @@ interface PropertyCardProps {
   bedrooms?: number
   bathrooms?: number
   area?: number
-  operation: "Venta" | "Alquiler"
+  operation: "Venta" | "Alquiler" | "Alquiler Temporario"
   href?: string
 }
 
