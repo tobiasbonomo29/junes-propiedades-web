@@ -2,6 +2,7 @@
 
 import { MapPin, Bed, Bath, Square } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 interface PropertyCardProps {
   image: string
@@ -13,6 +14,7 @@ interface PropertyCardProps {
   bathrooms?: number
   area?: number
   operation: "Venta" | "Alquiler"
+  href?: string
 }
 
 export function PropertyCard({
@@ -25,9 +27,12 @@ export function PropertyCard({
   bathrooms,
   area,
   operation,
+  href,
 }: PropertyCardProps) {
+  const Wrapper = href ? Link : "div"
+
   return (
-    <div className="group bg-card rounded-xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,194,122,0.15)]">
+    <Wrapper href={href ?? "#"} className="group bg-card rounded-xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,194,122,0.15)] block">
       {/* Image */}
       <div className="relative overflow-hidden aspect-[4/3]">
         <img
@@ -96,6 +101,6 @@ export function PropertyCard({
           </div>
         )}
       </div>
-    </div>
+    </Wrapper>
   )
 }

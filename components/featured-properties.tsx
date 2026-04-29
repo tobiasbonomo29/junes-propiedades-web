@@ -1,82 +1,31 @@
-"use client"
-
+import { createClient } from "@/utils/supabase/server"
+import { cookies } from "next/headers"
 import { PropertyCard } from "./property-card"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
 import Link from "next/link"
+import type { Property } from "@/lib/types"
 
-const properties = [
-  {
-    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop",
-    price: "USD 450.000",
-    title: "Casa moderna en Nordelta",
-    location: "Nordelta, Tigre",
-    type: "Casa",
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 320,
-    operation: "Venta" as const,
-  },
-  {
-    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop",
-    price: "USD 285.000",
-    title: "Departamento premium en Puerto Madero",
-    location: "Puerto Madero, CABA",
-    type: "Departamento",
-    bedrooms: 2,
-    bathrooms: 2,
-    area: 95,
-    operation: "Venta" as const,
-  },
-  {
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
-    price: "$ 850.000 / mes",
-    title: "PH renovado en Palermo",
-    location: "Palermo, CABA",
-    type: "PH",
-    bedrooms: 3,
-    bathrooms: 2,
-    area: 150,
-    operation: "Alquiler" as const,
-  },
-  {
-    image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=2070&auto=format&fit=crop",
-    price: "USD 520.000",
-    title: "Casa con jardín en San Isidro",
-    location: "San Isidro, GBA Norte",
-    type: "Casa",
-    bedrooms: 5,
-    bathrooms: 4,
-    area: 400,
-    operation: "Venta" as const,
-  },
-  {
-    image: "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?q=80&w=2070&auto=format&fit=crop",
-    price: "USD 180.000",
-    title: "Oficina en Microcentro",
-    location: "Microcentro, CABA",
-    type: "Oficina",
-    area: 80,
-    operation: "Venta" as const,
-  },
-  {
-    image: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=2084&auto=format&fit=crop",
-    price: "$ 1.200.000 / mes",
-    title: "Loft de diseño en Belgrano",
-    location: "Belgrano, CABA",
-    type: "Loft",
-    bedrooms: 1,
-    bathrooms: 1,
-    area: 65,
-    operation: "Alquiler" as const,
-  },
-]
+function formatPrice(price: number, currency: string, operation: string) {
+  const formatted = new Intl.NumberFormat("es-AR").format(price)
+  return `${currency} ${formatted}${operation === "Alquiler" ? "/mes" : ""}`
+}
 
-export function FeaturedProperties() {
+export async function FeaturedProperties() {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  const { data: properties } = await supabase
+    .from("properties")
+    .select("*")
+    .eq("status", "Activa")
+    .order("featured", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(6)
+
   return (
     <section id="propiedades" className="py-24 bg-background">
       <div className="container mx-auto px-4">
-        {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-4">
             Propiedades <span className="text-primary">Destacadas</span>
@@ -86,33 +35,55 @@ export function FeaturedProperties() {
           </p>
         </div>
 
-        {/* Properties Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {properties.map((property, index) => (
-            <div
-              key={index}
-              className="animate-in fade-in slide-in-from-bottom-4 duration-500"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <PropertyCard {...property} />
+        {properties && properties.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {(properties as Property[]).map((property, index) => (
+                <div
+                  key={property.id}
+                  className="animate-in fade-in slide-in-from-bottom-4 duration-500"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <PropertyCard
+                    image={
+                      property.images?.[0] ??
+                      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop"
+                    }
+                    price={formatPrice(property.price, property.currency, property.operation)}
+                    title={property.title}
+                    location={
+                      [property.neighborhood, property.city].filter(Boolean).join(", ")
+                    }
+                    type={property.type}
+                    bedrooms={property.bedrooms ?? undefined}
+                    bathrooms={property.bathrooms ?? undefined}
+                    area={property.total_area ?? undefined}
+                    operation={property.operation}
+                    href={`/propiedades/${property.id}`}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        {/* CTA Button */}
-        <div className="text-center">
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 group"
-          >
-            <Link href="#">
-              Ver todas las propiedades
-              <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </Button>
-        </div>
+            <div className="text-center">
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 group"
+              >
+                <Link href="#">
+                  Ver todas las propiedades
+                  <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-16">
+            <p className="text-muted-foreground">Próximamente nuevas propiedades disponibles.</p>
+          </div>
+        )}
       </div>
     </section>
   )
