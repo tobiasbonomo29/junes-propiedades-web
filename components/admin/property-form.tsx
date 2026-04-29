@@ -32,6 +32,7 @@ const propertySchema = z.object({
   operation: z.enum(["Venta", "Alquiler"]),
   type: z.enum(["Casa", "Departamento", "PH", "Local", "Oficina", "Lote"]),
   neighborhood: z.string().optional(),
+  exact_address: z.string().optional(),
   city: z.string().min(1, "La ciudad es requerida"),
   bedrooms: z.coerce.number().int().min(0).nullable().optional(),
   bathrooms: z.coerce.number().int().min(0).nullable().optional(),
@@ -83,6 +84,7 @@ export function PropertyForm({ property }: PropertyFormProps) {
       operation: property?.operation ?? "Venta",
       type: property?.type ?? "Casa",
       neighborhood: property?.neighborhood ?? "",
+      exact_address: property?.exact_address ?? "",
       city: property?.city ?? "Buenos Aires",
       bedrooms: property?.bedrooms ?? null,
       bathrooms: property?.bathrooms ?? null,
@@ -155,10 +157,15 @@ export function PropertyForm({ property }: PropertyFormProps) {
         }
 
         const allImages = [...existingImages, ...uploadedUrls]
+        const emptyToNull = (value?: string) => {
+          const trimmed = value?.trim()
+          return trimmed ? trimmed : null
+        }
         const normalized = {
           ...values,
-          description: values.description ?? null,
-          neighborhood: values.neighborhood ?? null,
+          description: emptyToNull(values.description),
+          neighborhood: emptyToNull(values.neighborhood),
+          exact_address: emptyToNull(values.exact_address),
           bedrooms: values.bedrooms ?? null,
           bathrooms: values.bathrooms ?? null,
           total_area: values.total_area ?? null,
@@ -326,6 +333,19 @@ export function PropertyForm({ property }: PropertyFormProps) {
               placeholder="Ej: Palermo, Nordelta, San Isidro"
               className="bg-background"
             />
+          </div>
+
+          <div className="space-y-2 sm:col-span-2">
+            <Label htmlFor="exact_address">Dirección exacta</Label>
+            <Input
+              id="exact_address"
+              {...register("exact_address")}
+              placeholder="Ej: Av. Santa Fe 1234, Palermo, CABA"
+              className="bg-background"
+            />
+            <p className="text-xs text-muted-foreground">
+              Se usa para mostrar la ubicación precisa en Google Maps.
+            </p>
           </div>
 
           <div className="space-y-2">

@@ -14,6 +14,7 @@ export interface Property {
   operation: PropertyOperation
   type: PropertyType
   neighborhood: string | null
+  exact_address: string | null
   city: string
   bedrooms: number | null
   bathrooms: number | null

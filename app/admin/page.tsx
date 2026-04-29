@@ -118,7 +118,8 @@ export default async function AdminDashboard() {
                           <div className="min-w-0">
                             <p className="font-medium text-foreground line-clamp-1">{property.title}</p>
                             <p className="text-muted-foreground text-xs">
-                              {[property.neighborhood, property.city].filter(Boolean).join(", ")}
+                              {property.exact_address ||
+                                [property.neighborhood, property.city].filter(Boolean).join(", ")}
                             </p>
                           </div>
                         </div>

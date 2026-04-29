@@ -28,19 +28,14 @@ export function Hero() {
           {/* Logo Icon */}
           <div className="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-GNMyDkRjpt7aBNrYk0LuDVlree0ZSj.png"
+              src="/junes-logo.png"
               alt="Junes Propiedades"
-              className="h-48 md:h-64 object-contain"
+              className="h-72 md:h-96 lg:h-[28rem] object-contain drop-shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
             />
           </div>
 
-          {/* Tagline */}
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
-            Compra, venta y tasación de propiedades con atención personalizada
-          </p>
-
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+          <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
             <Button
               asChild
               size="lg"

@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS properties (
   type          TEXT         NOT NULL
                              CHECK (type IN ('Casa','Departamento','PH','Local','Oficina','Lote')),
   neighborhood  TEXT,
+  exact_address TEXT,
   city          TEXT         NOT NULL DEFAULT 'Buenos Aires',
   bedrooms      INTEGER,
   bathrooms     INTEGER,
@@ -32,6 +33,10 @@ CREATE TABLE IF NOT EXISTS properties (
   status        TEXT         NOT NULL DEFAULT 'Activa'
                              CHECK (status IN ('Activa','Vendida','Alquilada'))
 );
+
+-- Migración para bases existentes: agrega dirección exacta si la tabla ya existía
+ALTER TABLE properties
+  ADD COLUMN IF NOT EXISTS exact_address TEXT;
 
 -- Trigger para actualizar updated_at automáticamente
 CREATE OR REPLACE FUNCTION update_updated_at_column()
