@@ -1,0 +1,103 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Junes Propiedades - Premium Dark Theme */
+  --background: #0f0f0f;
+  --foreground: #ffffff;
+  --card: #1a1a1a;
+  --card-foreground: #ffffff;
+  --popover: #1a1a1a;
+  --popover-foreground: #ffffff;
+  --primary: #00c27a;
+  --primary-foreground: #0f0f0f;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #ffffff;
+  --muted: #2a2a2a;
+  --muted-foreground: #a0a0a0;
+  --accent: #00c27a;
+  --accent-foreground: #0f0f0f;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #2a2a2a;
+  --input: #1a1a1a;
+  --ring: #00c27a;
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-sans), 'Inter', system-ui, sans-serif;
+  --font-serif: var(--font-serif), 'Playfair Display', Georgia, serif;
+  --font-mono: 'Geist Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00c27a;
+}
+
+/* Green glow effect */
+.glow-green {
+  box-shadow: 0 0 20px rgba(0, 194, 122, 0.3);
+}
+
+.glow-green-subtle {
+  box-shadow: 0 0 40px rgba(0, 194, 122, 0.15);
+}
+
+/* Text glow */
+.text-glow {
+  text-shadow: 0 0 20px rgba(0, 194, 122, 0.5);
+}
