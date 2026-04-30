@@ -23,10 +23,11 @@ export function Hero({ initialFilters }: HeroProps) {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')`,
+          backgroundImage: `url('https://images.unsplash.com/photo-1600210492493-0946911123ea?q=80&w=2074&auto=format&fit=crop')`,
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/70 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/45 via-background/35 to-background" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.08),rgba(0,0,0,0.45))]" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 pt-24 pb-16">
@@ -35,7 +36,7 @@ export function Hero({ initialFilters }: HeroProps) {
             <img
               src="/junes-logo.png"
               alt="Junes Propiedades"
-              className="h-72 md:h-96 lg:h-[28rem] object-contain drop-shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
+              className="h-80 md:h-[26rem] lg:h-[31rem] object-contain drop-shadow-[0_18px_34px_rgba(0,0,0,0.75)]"
             />
           </div>
 
