@@ -1,6 +1,5 @@
-"use client"
-
 import { CheckCircle } from "lucide-react"
+import Image from "next/image"
 
 const features = [
   "Atención personalizada y dedicada",
@@ -19,9 +18,11 @@ export function About() {
           {/* Image */}
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop"
                 alt="Junes Propiedades - Sobre Nosotros"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent" />

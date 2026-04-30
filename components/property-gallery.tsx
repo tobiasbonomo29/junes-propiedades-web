@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { ChevronLeft, ChevronRight, Images } from "lucide-react"
+import Image from "next/image"
 
 const DEFAULT_IMAGE =
   "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop"
@@ -21,10 +22,13 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
   return (
     <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_120px]">
       <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-border bg-muted shadow-[0_24px_80px_rgba(0,0,0,0.28)]">
-        <img
+        <Image
           key={allImages[currentIndex]}
           src={allImages[currentIndex]}
           alt={`${title} - imagen ${currentIndex + 1}`}
+          fill
+          priority
+          sizes="(min-width: 1024px) 70vw, 100vw"
           className="h-full w-full object-cover animate-in fade-in duration-500"
         />
         <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-background/75 to-transparent" />
@@ -67,9 +71,11 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
               }`}
               aria-label={`Ver imagen ${i + 1}`}
             >
-              <img
+              <Image
                 src={img}
                 alt={`${title} - miniatura ${i + 1}`}
+                fill
+                sizes="120px"
                 className="h-full w-full object-cover"
               />
             </button>

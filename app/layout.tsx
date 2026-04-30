@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
 
 const playfair = Playfair_Display({ 
   subsets: ["latin"],
@@ -14,26 +15,57 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Junes Propiedades | Donde los buenos negocios comienzan',
-  description: 'Compra, venta y tasación de propiedades con atención personalizada en Argentina. Inmobiliaria premium con servicios de tasaciones judiciales y home staging.',
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
+  title: {
+    default: 'Junes Propiedades | Inmobiliaria en Buenos Aires',
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
   keywords: ['inmobiliaria', 'propiedades', 'Argentina', 'tasaciones', 'compra', 'venta', 'alquiler'],
-  generator: 'v0.app',
-  icons: {
-    icon: [
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'es_AR',
+    url: '/',
+    siteName: SITE_NAME,
+    title: 'Junes Propiedades | Inmobiliaria en Buenos Aires',
+    description: SITE_DESCRIPTION,
+    images: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: '/junes-logo.png',
+        width: 1024,
+        height: 1536,
+        alt: SITE_NAME,
       },
     ],
-    apple: '/apple-icon.png',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Junes Propiedades | Inmobiliaria en Buenos Aires',
+    description: SITE_DESCRIPTION,
+    images: ['/junes-logo.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
   },
 }
 

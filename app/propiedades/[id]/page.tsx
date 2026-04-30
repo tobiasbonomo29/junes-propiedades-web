@@ -28,6 +28,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import type { Metadata } from "next"
+import { SITE_NAME, SITE_URL } from "@/lib/site"
 
 function formatPrice(price: number, currency: string, operation: string) {
   const formatted = new Intl.NumberFormat("es-AR").format(price)
@@ -114,17 +115,44 @@ export async function generateMetadata({
   const supabase = createClient(cookieStore)
   const { data } = await supabase
     .from("properties")
-    .select("title, description, images")
+    .select("title, description, images, city, neighborhood, operation, type, price, currency")
     .eq("id", id)
     .single()
 
   if (!data) return { title: "Propiedad | Junes Propiedades" }
 
+  const title = `${data.title} | ${SITE_NAME}`
+  const description =
+    data.description ||
+    `${data.type} en ${data.operation.toLowerCase()} en ${[data.neighborhood, data.city]
+      .filter(Boolean)
+      .join(", ")}. Consultá con ${SITE_NAME}.`
+  const image = data.images?.[0] ?? "/junes-logo.png"
+
   return {
-    title: `${data.title} | Junes Propiedades`,
-    description: data.description ?? undefined,
+    title,
+    description,
+    alternates: {
+      canonical: `/propiedades/${id}`,
+    },
     openGraph: {
-      images: data.images?.[0] ? [data.images[0]] : [],
+      type: "article",
+      title,
+      description,
+      url: `/propiedades/${id}`,
+      siteName: SITE_NAME,
+      images: [
+        {
+          url: image,
+          alt: data.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
     },
   }
 }
@@ -178,9 +206,67 @@ export default async function PropertyDetailPage({
     p.bathrooms ? `${p.bathrooms} baño${p.bathrooms === 1 ? "" : "s"}` : null,
     formatMeasure(p.total_area),
   ].filter(Boolean)
+  const propertyUrl = `${SITE_URL}/propiedades/${p.id}`
+  const propertyJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    name: p.title,
+    url: propertyUrl,
+    image: p.images?.length ? p.images : [`${SITE_URL}/junes-logo.png`],
+    description: p.description,
+    datePosted: p.created_at,
+    offers: {
+      "@type": "Offer",
+      price: p.price,
+      priceCurrency: p.currency,
+      availability: "https://schema.org/InStock",
+      url: propertyUrl,
+      businessFunction:
+        p.operation === "Venta"
+          ? "https://schema.org/Sell"
+          : "https://schema.org/LeaseOut",
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: p.city,
+      streetAddress: p.exact_address || undefined,
+      addressRegion: p.neighborhood || undefined,
+      addressCountry: "AR",
+    },
+  }
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Propiedades",
+        item: `${SITE_URL}/propiedades`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: p.title,
+        item: propertyUrl,
+      },
+    ],
+  }
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([propertyJsonLd, breadcrumbJsonLd]),
+        }}
+      />
       <Navbar />
       <main className="min-h-screen bg-background pt-24">
         <div className="container mx-auto px-4 pb-24">

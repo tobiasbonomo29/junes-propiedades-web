@@ -1,5 +1,3 @@
-"use client"
-
 import Link from "next/link"
 import { Instagram, Phone, Mail } from "lucide-react"
 
@@ -9,7 +7,7 @@ export function Footer() {
   return (
     <footer className="bg-card border-t border-border">
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="inline-block mb-6">
@@ -74,26 +72,6 @@ export function Footer() {
                   >
                     {link.label}
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h4 className="font-serif text-lg font-semibold text-foreground mb-6">
-              Servicios
-            </h4>
-            <ul className="space-y-3">
-              {[
-                "Compra de Propiedades",
-                "Venta de Propiedades",
-                "Alquiler",
-                "Tasaciones Judiciales",
-                "Home Staging",
-              ].map((service) => (
-                <li key={service}>
-                  <span className="text-muted-foreground">{service}</span>
                 </li>
               ))}
             </ul>

@@ -1,8 +1,7 @@
-"use client"
-
 import { MapPin, Bed, Bath, Square } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import Image from "next/image"
 
 interface PropertyCardProps {
   image: string
@@ -35,9 +34,11 @@ export function PropertyCard({
     <Wrapper href={href ?? "#"} className="group bg-card rounded-xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,194,122,0.15)] block">
       {/* Image */}
       <div className="relative overflow-hidden aspect-[4/3]">
-        <img
+        <Image
           src={image}
           alt={title}
+          fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
