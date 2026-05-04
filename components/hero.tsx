@@ -21,24 +21,22 @@ export function Hero({ initialFilters }: HeroProps) {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div
-        className="absolute inset-0"
-      >
+      <div className="absolute inset-0">
         <Image
-          src="https://images.unsplash.com/photo-1600210492493-0946911123ea?q=80&w=2074&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2070&auto=format&fit=crop"
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-center brightness-[0.72] contrast-[1.05] saturate-[0.9]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/45 via-background/35 to-background" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.08),rgba(0,0,0,0.45))]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(15,15,15,0.18),rgba(15,15,15,0.76))]" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 pt-24 pb-16">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          <div className="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="relative mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 before:absolute before:inset-[8%] before:rounded-[2rem] before:bg-[radial-gradient(ellipse_at_center,rgba(236,255,246,0.9)_0%,rgba(0,194,122,0.24)_46%,rgba(15,15,15,0)_72%)] before:blur-2xl before:content-['']">
             <Image
               src="/junes-logo.png"
               alt="Junes Propiedades"
@@ -46,7 +44,7 @@ export function Hero({ initialFilters }: HeroProps) {
               height={1536}
               priority
               sizes="(min-width: 1024px) 330px, (min-width: 768px) 277px, 213px"
-              className="h-80 md:h-[26rem] lg:h-[31rem] object-contain drop-shadow-[0_18px_34px_rgba(0,0,0,0.75)]"
+              className="relative z-10 h-80 md:h-[26rem] lg:h-[31rem] object-contain brightness-[1.35] contrast-[1.2] saturate-[1.15] drop-shadow-[0_24px_46px_rgba(0,0,0,0.95)]"
             />
           </div>
           <h1 className="sr-only">Junes Propiedades - Inmobiliaria en Buenos Aires</h1>

@@ -31,7 +31,7 @@ export function About() {
             {/* Floating Stats Card */}
             <div className="absolute -bottom-8 -right-4 md:-right-8 bg-card rounded-xl p-6 border border-border shadow-2xl">
               <div className="text-center">
-                <p className="text-4xl font-serif font-bold text-primary mb-1">15+</p>
+                <p className="text-4xl font-serif font-bold text-primary mb-1">10+</p>
                 <p className="text-sm text-muted-foreground">Años de experiencia</p>
               </div>
             </div>
@@ -48,7 +48,7 @@ export function About() {
 
             <p className="text-muted-foreground text-lg leading-relaxed mb-6">
               En <span className="text-foreground font-semibold">Junes Propiedades</span>, nos dedicamos
-              a hacer realidad tus sueños inmobiliarios. Con más de 15 años de experiencia en el mercado
+              a hacer realidad tus sueños inmobiliarios. Con más de 10 años de experiencia en el mercado
               argentino, ofrecemos un servicio integral y personalizado que se adapta a las necesidades
               de cada cliente.
             </p>

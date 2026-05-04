@@ -24,7 +24,7 @@ const contactInfo = [
   {
     icon: MapPin,
     label: "Ubicación",
-    value: "Buenos Aires, Argentina",
+    value: "Av Congreso 5995 1° A",
     href: "#",
   },
 ]
