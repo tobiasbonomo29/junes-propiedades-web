@@ -4,7 +4,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { deleteProperty, toggleFeatured } from "./actions"
-import { Plus, Pencil, Trash2, Star, StarOff } from "lucide-react"
+import { Plus, Pencil, Trash2, Star, StarOff, PlayCircle } from "lucide-react"
 import type { Property } from "@/lib/types"
 
 function formatPrice(price: number, currency: string, operation: string) {
@@ -109,9 +109,21 @@ export default async function AdminDashboard() {
                                 alt={property.title}
                                 className="w-full h-full object-cover"
                               />
+                            ) : property.videos?.[0] ? (
+                              <div className="relative h-full w-full">
+                                <video
+                                  src={property.videos[0]}
+                                  muted
+                                  preload="metadata"
+                                  className="h-full w-full object-cover"
+                                />
+                                <span className="absolute inset-0 flex items-center justify-center bg-black/30 text-white">
+                                  <PlayCircle className="h-5 w-5" />
+                                </span>
+                              </div>
                             ) : (
                               <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-xs">
-                                Sin foto
+                                Sin media
                               </div>
                             )}
                           </div>

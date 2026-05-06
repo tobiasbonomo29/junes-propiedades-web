@@ -49,17 +49,24 @@ function existingImages(formData: FormData) {
     .filter((value): value is string => typeof value === "string" && value.length > 0)
 }
 
-async function uploadImages(formData: FormData) {
+function existingVideos(formData: FormData) {
+  return formData
+    .getAll("existing_videos")
+    .filter((value): value is string => typeof value === "string" && value.length > 0)
+}
+
+async function uploadMedia(formData: FormData, field: string, type: "image" | "video") {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
   const uploadedUrls: string[] = []
+  const maxSize = type === "image" ? 5 * 1024 * 1024 : 50 * 1024 * 1024
 
-  for (const value of formData.getAll("images")) {
+  for (const value of formData.getAll(field)) {
     if (!(value instanceof File) || value.size === 0) continue
-    if (!value.type.startsWith("image/")) continue
-    if (value.size > 5 * 1024 * 1024) continue
+    if (!value.type.startsWith(`${type}/`)) continue
+    if (value.size > maxSize) continue
 
-    const ext = value.name.split(".").pop() || "jpg"
+    const ext = value.name.split(".").pop() || (type === "image" ? "jpg" : "mp4")
     const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
     const { data, error } = await supabase.storage
       .from("property-images")
@@ -77,6 +84,10 @@ async function uploadImages(formData: FormData) {
   return uploadedUrls
 }
 
+function storagePathFromUrl(url: string) {
+  return url.split("/property-images/")[1]?.split("?")[0] ?? ""
+}
+
 export async function savePropertyFromForm(id: string | null, formData: FormData) {
   const title = text(formData, "title")
   const price = positiveNumber(formData, "price")
@@ -86,7 +97,8 @@ export async function savePropertyFromForm(id: string | null, formData: FormData
   if (!price) throw new Error("Ingresá un precio válido mayor a 0")
   if (!city) throw new Error("La ciudad es requerida")
 
-  const uploadedImages = await uploadImages(formData)
+  const uploadedImages = await uploadMedia(formData, "images", "image")
+  const uploadedVideos = await uploadMedia(formData, "videos", "video")
   const data: PropertyInsert = {
     title,
     description: nullableText(formData, "description"),
@@ -106,6 +118,7 @@ export async function savePropertyFromForm(id: string | null, formData: FormData
     garden: formData.has("garden"),
     security: formData.has("security"),
     images: [...existingImages(formData), ...uploadedImages],
+    videos: [...existingVideos(formData), ...uploadedVideos],
     featured: formData.has("featured"),
     status: option(formData, "status", STATUSES, "Activa"),
   }
@@ -161,20 +174,22 @@ export async function deleteProperty(id: string) {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
 
-  // Eliminar imágenes del storage
+  // Eliminar archivos del storage
   const { data: property } = await supabase
     .from("properties")
-    .select("images")
+    .select("images, videos")
     .eq("id", id)
     .single()
 
-  if (property?.images?.length) {
-    const paths = (property.images as string[])
-      .map((url) => url.split("/property-images/")[1] ?? "")
-      .filter(Boolean)
-    if (paths.length > 0) {
-      await supabase.storage.from("property-images").remove(paths)
-    }
+  const paths = [
+    ...((property?.images as string[] | undefined) ?? []),
+    ...((property?.videos as string[] | undefined) ?? []),
+  ]
+    .map(storagePathFromUrl)
+    .filter(Boolean)
+
+  if (paths.length > 0) {
+    await supabase.storage.from("property-images").remove(paths)
   }
 
   await supabase.from("properties").delete().eq("id", id)

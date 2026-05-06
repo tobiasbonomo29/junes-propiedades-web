@@ -25,6 +25,7 @@ export interface Property {
   garden: boolean
   security: boolean
   images: string[]
+  videos: string[]
   featured: boolean
   status: PropertyStatus
 }

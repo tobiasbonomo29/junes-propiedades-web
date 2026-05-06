@@ -213,6 +213,7 @@ export default async function PropertyDetailPage({
     name: p.title,
     url: propertyUrl,
     image: p.images?.length ? p.images : [`${SITE_URL}/junes-logo.png`],
+    video: p.videos?.length ? p.videos : undefined,
     description: p.description,
     datePosted: p.created_at,
     offers: {
@@ -336,7 +337,7 @@ export default async function PropertyDetailPage({
 
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div className="space-y-12">
-              <PropertyGallery images={p.images} title={p.title} />
+              <PropertyGallery images={p.images} videos={p.videos} title={p.title} />
 
               <Section eyebrow="Ficha" title="Información básica">
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS properties (
   garden        BOOLEAN      NOT NULL DEFAULT FALSE,
   security      BOOLEAN      NOT NULL DEFAULT FALSE,
   images        TEXT[]       NOT NULL DEFAULT '{}',
+  videos        TEXT[]       NOT NULL DEFAULT '{}',
   featured      BOOLEAN      NOT NULL DEFAULT FALSE,
   status        TEXT         NOT NULL DEFAULT 'Activa'
                              CHECK (status IN ('Activa','Vendida','Alquilada'))
@@ -37,6 +38,10 @@ CREATE TABLE IF NOT EXISTS properties (
 -- Migración para bases existentes: agrega dirección exacta si la tabla ya existía
 ALTER TABLE properties
   ADD COLUMN IF NOT EXISTS exact_address TEXT;
+
+-- Migración para bases existentes: agrega videos a las publicaciones
+ALTER TABLE properties
+  ADD COLUMN IF NOT EXISTS videos TEXT[] NOT NULL DEFAULT '{}';
 
 -- Migración para bases existentes: permite alquiler temporario como operación
 ALTER TABLE properties
