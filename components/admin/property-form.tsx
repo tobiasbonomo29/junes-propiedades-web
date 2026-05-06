@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Upload, Video } from "lucide-react"
+import { VideoUploader } from "@/components/admin/video-uploader"
+import { Upload } from "lucide-react"
 import Link from "next/link"
 
 const OPERATIONS = ["Venta", "Alquiler", "Alquiler Temporario"] as const
@@ -242,66 +243,7 @@ export function PropertyForm({ property }: PropertyFormProps) {
       </section>
 
       <section className="space-y-4 rounded-xl border border-border bg-card p-6">
-        <h2 className="text-base font-semibold text-foreground">
-          Videos
-          {property?.videos?.length ? (
-            <span className="ml-2 text-sm font-normal text-muted-foreground">
-              ({property.videos.length})
-            </span>
-          ) : null}
-        </h2>
-
-        <label
-          htmlFor="videos"
-          className="block cursor-pointer rounded-xl border-2 border-dashed border-border p-8 text-center transition-colors hover:border-primary/50 hover:bg-muted/10"
-        >
-          <Video className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
-          <span className="block text-sm font-medium text-foreground">
-            HacÃ© clic para seleccionar videos
-          </span>
-          <span className="mt-1 block text-xs text-muted-foreground">
-            MP4, WebM o MOV - mÃ¡ximo 50 MB por video
-          </span>
-        </label>
-        <input
-          id="videos"
-          name="videos"
-          type="file"
-          accept="video/mp4,video/webm,video/quicktime"
-          multiple
-          className="block w-full rounded-md border border-border bg-background p-2 text-sm text-foreground"
-        />
-
-        {property?.videos?.length ? (
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {property.videos.map((url) => (
-              <label
-                key={url}
-                className="group relative block overflow-hidden rounded-lg border border-border bg-background"
-              >
-                <video
-                  src={url}
-                  controls
-                  preload="metadata"
-                  className="aspect-video w-full bg-black object-cover"
-                />
-                <span className="absolute bottom-2 left-2 rounded bg-black/70 px-2 py-1 text-xs text-white">
-                  Video actual
-                </span>
-                <span className="absolute inset-x-0 top-0 bg-black/70 px-2 py-1 text-xs text-white">
-                  <input
-                    type="checkbox"
-                    name="existing_videos"
-                    value={url}
-                    defaultChecked
-                    className="mr-1 accent-primary"
-                  />
-                  Mantener
-                </span>
-              </label>
-            ))}
-          </div>
-        ) : null}
+        <VideoUploader initialVideos={property?.videos ?? []} />
       </section>
 
       <div className="flex items-center gap-4 pb-8">
